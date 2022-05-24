@@ -1,0 +1,188 @@
+<html>
+  <head>
+    <title>Pagina Animes</title>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='/webforms/ExperianEmailJsScripts/jquery/js/jquery.jsonp-2.4.0.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <style>
+        input[type=text] {
+            width: 150px;
+            box-sizing: border-box;
+            border: 2px solid rgb(6, 236, 225);
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: white;
+            background-image: url('searchicon.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.3s ease-in-out;
+        }
+          
+        input[type=text]:hover {
+            width: 90%;
+        }
+
+        #texto:focus{
+            border: solid 2px #00cccc;
+        }
+
+    
+        h1{
+            text-align: center;
+            color: #00cccc;
+        }
+    
+        table {
+            width: 900px;
+            height: 300px;
+            font-family: 'Arial';
+            margin: 25px auto;
+            text-align: center;
+            border-collapse: collapse;
+            border: 1px solid #eee;
+            border-bottom: 2px solid #00cccc;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.10),
+                0px 10px 20px rgba(0,0,0,0.05),
+                0px 20px 20px rgba(0,0,0,0.05),
+                0px 30px 20px rgba(0,0,0,0.05);
+        }
+    
+        tr:hover {
+            background: #f4f4f4;
+        }
+    
+        td {
+            color: #555;
+        }
+    
+        th, td {
+            color: rgb(5, 235, 235);
+            border: 1px solid #eee;
+            padding: 12px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+    
+        th {
+            background: #00cccc;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+    </style>
+  </head>
+  <body style="background-image: url('https://i0.wp.com/images.alphacoders.com/603/603255.jpg')">
+
+    <h1><u>Página de Animes</u></h1>>
+    
+    <form style="margin: 70px;">
+        <input type="text" id="pesquisa" placeholder="Pesquisa..">
+    </form>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Título &#11014;&#11015;</th>
+          <th>Ano &#11014;&#11015;</th>
+          <th>Score &#11014;&#11015;</th>
+          <th>Imagem &#11014;&#11015;</th>
+          <th>URL &#11014;&#11015;</th>
+        </tr>
+      </thead>
+      <tbody id = "tabela"> 
+        <div id="imagem"></div>
+      </tbody>
+        
+    </table>
+    
+    
+    <script>         
+
+      var animes = [
+
+        {
+          url: "https://myanimelist.net/anime/1535/Death_Note",
+          image_url: "https://cdn.myanimelist.net/images/anime/9/9453.jpg?s=b89e80691ac5cc0610847ccbe0b8424a",
+          title: "Death Note",
+          score: 8.63,
+          start_date: new Date('2006-10-04T00:00:00+00:00'),
+        },
+  
+        {
+          url: "https://myanimelist.net/anime/28223/Death_Parade",
+          image_url: "https://cdn.myanimelist.net/images/anime/5/71553.jpg?s=68833377dab9077cd7847c91eec46f08",
+          title: "Death Parade",
+          score: 8.18,
+          start_date: new Date('2015-01-10T00:00:00+00:00'),
+        },
+  
+        {
+          url: "https://myanimelist.net/anime/14353/Death_Billiards",
+          image_url: "https://cdn.myanimelist.net/images/anime/11/48721.jpg?s=4728f1efeabefb313634e64ac91f514b",
+          title: "Death Billiards",
+          score: 7.91,
+          start_date: new Date('2013-03-02T00:00:00+00:00'),
+        },
+        
+        {
+          url: "https://myanimelist.net/anime/28977/Gintama%C2%B0",
+          image_url: "https://cdn.myanimelist.net/images/anime/3/72078l.jpg",
+          title: "Gintama",
+          score: 9.08,
+          start_date: new Date('2015-04-08T00:00:00+00:00'),
+        },
+
+        {
+          url: "https://myanimelist.net/anime/20/Naruto",
+          image_url: "https://cdn.myanimelist.net/images/anime/1/20.jpg",
+          title: "Naruto",
+          score: 7.97,
+          start_date: new Date('2002-10-03T00:00:00+00:00'),
+        }
+      ]
+
+
+      function tabelaAnimes(){
+        return animes.map(f => `<tbody><td>${f.title}</td> <td>${f.start_date.getFullYear()}</td> <td>${f.score}</td> <td><a href="#" onclick="carregarImagem(event,'${f.image_url}')">Carregar</a></td> <td><a href=${f.url}>link</a></td></tbody>`)
+
+      }               
+
+      const carregarImagem = (event, url) => {
+        event.preventDefault()
+        document.getElementById("imagem").innerHTML = `<img src="${url}"  style="width:200px"/>`
+      }
+
+      document.getElementById("tabela").innerHTML = `${tabelaAnimes().join('\n')}`;
+
+
+      //Função ordenação
+      const getCellValue = (tr, idx) => 
+        tr.children[idx].innerText || tr.children[idx].textContent;
+
+
+      const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+      v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+      )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+      document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+      const table = th.closest('table');
+      Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+          .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+          .forEach(tr => table.appendChild(tr) );
+      })));
+
+      //função pesquisa
+      
+
+    </script>
+
+  </body>
+
+</html>
