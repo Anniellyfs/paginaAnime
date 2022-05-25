@@ -5,7 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type='text/javascript' src='/webforms/ExperianEmailJsScripts/jquery/js/jquery.jsonp-2.4.0.js'></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
     <style>
         input[type=text] {
@@ -83,17 +83,17 @@
     <h1><u>Página de Animes</u></h1>>
     
     <form style="margin: 70px;">
-        <input type="text" id="pesquisa" placeholder="Pesquisa..">
+        <input type="text" id="busca" placeholder="Pesquisa..">
     </form>
     
-    <table>
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th>Título &#11014;&#11015;</th>
-          <th>Ano &#11014;&#11015;</th>
-          <th>Score &#11014;&#11015;</th>
-          <th>Imagem &#11014;&#11015;</th>
-          <th>URL &#11014;&#11015;</th>
+          <th data-column="title" data-order="desc">Título &#9650</th>
+          <th data-column="start_date" data-order="desc">Ano &#9650</th>
+          <th data-column="score" data-order="desc">Score &#9650</th>
+          <th>Imagem</th>
+          <th>URL</th>
         </tr>
       </thead>
       <tbody id = "tabela"> 
@@ -162,24 +162,49 @@
       document.getElementById("tabela").innerHTML = `${tabelaAnimes().join('\n')}`;
 
 
-      //Função ordenação
-      const getCellValue = (tr, idx) => 
-        tr.children[idx].innerText || tr.children[idx].textContent;
+      //função ordenar
+      $('th').on('click', function(){
+        var column = $(this).data('column')
+        var order = $(this).data('order')
+        var text = $(this).html()
+        text = text.substring(0, text.length - 1)
 
+        if(order == 'desc'){
+          $(this).data('order', "asc")
+          animes = animes.sort((a,b) => a[column] > b[column] ? 1 : -1)
+          text += '&#9660'
 
-      const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
-      v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-      )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+        }else{
+          $(this).data('order', "desc")
+          animes = animes.sort((a,b) => a[column] < b[column] ? 1 : -1)
+          text += '&#9650'
 
-      document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-      const table = th.closest('table');
-      Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
-          .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-          .forEach(tr => table.appendChild(tr) );
-      })));
+        }
+        $(this).html(text)
+        buildTable(animes)
+      })
 
-      //função pesquisa
-      
+      buildTable(animes)
+
+      function buildTable(data){
+        var table = document.getElementById('tabela')
+        table.innerHTML = ''
+        for (var i = 0; i < data.length; i++){
+          var row = `<tr>
+                  <td>${data[i].title}</td>
+                  <td>${data[i].start_date.getFullYear()}</td>
+                  <td>${data[i].score}</td>
+                  <td>${data[i].image_url}</td>
+                  <td>${data[i].url}</td>
+                </tr>`
+          table.innerHTML += row
+          document.getElementById("tabela").innerHTML = `${tabelaAnimes().join('\n')}`;
+
+        }
+      }
+
+    
+
 
     </script>
 
