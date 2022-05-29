@@ -1,11 +1,8 @@
 <html>
   <head>
     <title>Pagina Animes</title>
-    <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type='text/javascript' src='/webforms/ExperianEmailJsScripts/jquery/js/jquery.jsonp-2.4.0.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
     <style>
         input[type=text] {
@@ -15,7 +12,6 @@
             border-radius: 6px;
             font-size: 15px;
             background-color: white;
-            background-image: url('searchicon.png');
             background-position: 10px 10px;
             background-repeat: no-repeat;
             padding: 12px 20px 12px 40px;
@@ -82,8 +78,8 @@
 
     <h1><u>Página de Animes</u></h1>>
     
-    <form style="margin: 70px;">
-        <input type="text" id="busca" placeholder="Pesquisa..">
+    <form style="margin: 70px;" id ="link">
+      <input type="text" id="buscarDados" placeholder="Pesquisa...">
     </form>
     
     <table class="table table-striped">
@@ -203,9 +199,16 @@
         }
       }
 
+      //Função pesquisar
+      async function buscarDados(){
+      
+        let pesquisa = document.getElementById("buscar").value;
+        let buscar = await fetch(`https://api.jikan.moe/v3/search/anime?q=Death${pesquisa}`).then((res) => res.json())
     
-
-
+        document.getElementById("tabela").innerHTML = `${tabelaAnimes().join('\n')}`;
+                          
+      }
+  
     </script>
 
   </body>
