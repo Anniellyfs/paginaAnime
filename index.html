@@ -205,7 +205,7 @@
         let pesquisa = document.getElementById("buscar").value;
         let buscar = await fetch(`https://api.jikan.moe/v3/search/anime?q=Death${pesquisa}`).then((res) => res.json())
     
-        document.getElementById("tabela").innerHTML = `${tabelaAnimes().join('\n')}`;
+        document.getElementById("tabela").innerHTML = buscar;
                           
       }
   
